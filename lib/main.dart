@@ -1,6 +1,7 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_app_firebase/Auth/providers/auth_provider.dart';
+import 'package:flutter_app_firebase/chats/home_page.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -13,7 +14,7 @@ void main() async {
   runApp(ChangeNotifierProvider<AuthProvider>(
       create: (context)=>AuthProvider(),
 
-      child: MaterialApp(home: FirebaseConfiguration())));
+      child: MaterialApp(home:email == null ? FirebaseConfiguration():HomePage())));
 }
 
 class FirebaseConfiguration extends StatelessWidget {

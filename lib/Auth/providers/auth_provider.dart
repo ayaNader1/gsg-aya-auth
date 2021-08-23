@@ -4,12 +4,17 @@ import 'package:flutter/material.dart';
 import 'package:flutter_app_firebase/Auth/helpers/auth_helper.dart';
 import 'package:flutter_app_firebase/Auth/helpers/firestore_helper.dart';
 import 'package:flutter_app_firebase/Auth/models/register_request.dart';
+import 'package:flutter_app_firebase/Auth/models/user_model.dart';
 import 'package:flutter_app_firebase/chats/home_page.dart';
 import 'package:flutter_app_firebase/servises/custom_dialog.dart';
 import 'package:flutter_app_firebase/servises/routes_helper.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class AuthProvider extends ChangeNotifier {
+  AuthProvider(){
+    getAllUsers();
+  }
+  List<UserModel> allUsers;
   TabController tabController;
   TextEditingController emailController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
@@ -76,6 +81,10 @@ class AuthProvider extends ChangeNotifier {
   resetPassword() async {
     AuthHelper.authHelper.resetPassword(emailController.text);
     resetControllers();
+  }
+
+  getAllUsers() async {
+    this.allUsers = await FirestoreHelper.firestoreHelper.getAllUsers();
   }
 }
 
