@@ -1,7 +1,13 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_app_firebase/Auth/providers/auth_provider.dart';
+import 'package:flutter_app_firebase/Auth/ui/login_page.dart';
+import 'package:flutter_app_firebase/Auth/ui/register_page.dart';
+import 'package:flutter_app_firebase/Auth/ui/reset_password_page.dart';
 import 'package:flutter_app_firebase/chats/home_page.dart';
+import 'package:flutter_app_firebase/chats/profile_page.dart';
+import 'package:flutter_app_firebase/chats/users_page.dart';
+import 'package:flutter_app_firebase/servises/routes_helper.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -14,7 +20,19 @@ void main() async {
   runApp(ChangeNotifierProvider<AuthProvider>(
       create: (context)=>AuthProvider(),
 
-      child: MaterialApp(home:email == null ? FirebaseConfiguration():HomePage())));
+      child: MaterialApp(
+        debugShowCheckedModeBanner: false,
+          routes: {
+            LoginPage.routeName: (context) => LoginPage(),
+            RegisterPage.routeName: (context) => RegisterPage(),
+            ResetPasswordPage.routeName: (context) => ResetPasswordPage(),
+            HomePage.routeName: (context) => HomePage(),
+            AuthMainPage.routeName: (context) => AuthMainPage(),
+            UserPage.routeName: (context) => UserPage(),
+            ProfilePage.routeName: (context) => ProfilePage(),
+          },
+          navigatorKey: RouteHelper.routeHelper.navKey,
+          home:email == null ? FirebaseConfiguration() : HomePage())));
 }
 
 class FirebaseConfiguration extends StatelessWidget {

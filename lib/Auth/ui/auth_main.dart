@@ -6,6 +6,7 @@ import 'package:provider/provider.dart';
 import 'login_page.dart';
 
 class AuthMainPage extends StatefulWidget {
+  static final String routeName = 'authPage';
   @override
   _AuthMainPageState createState() => _AuthMainPageState();
 }
