@@ -62,4 +62,6 @@ class FirestoreHelper {
         .doc(userModel.id)
         .update(userModel.toMap());
   }
+
+
 }
