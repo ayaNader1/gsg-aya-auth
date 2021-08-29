@@ -21,12 +21,12 @@ class FirestoreHelper {
     }
   }
 
-  Future<List<UserModel>> getAllUsers() async {
-    final listOfMaps = await firebaseFirestore.collection('Users').get();
-    final users = listOfMaps.docs.map((e) => UserModel.fromMap(e.data()))
-        .toList();
-    return users;
-  }
+  // Future<List<UserModel>> getAllUsers() async {
+  //   final listOfMaps = await firebaseFirestore.collection('Users').get();
+  //   final users = listOfMaps.docs.map((e) => UserModel.fromMap(e.data()))
+  //       .toList();
+  //   return users;
+  // }
 
   Future<List<CountryModel>> getAllCountries() async{
     QuerySnapshot<Map<String,dynamic>> querySnapshot = await firebaseFirestore.collection('Countries').get();

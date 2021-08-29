@@ -18,7 +18,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 class AuthProvider extends ChangeNotifier {
   AuthProvider(){
-    getAllUsers();
+    // getAllUsers();
     getCountriesFromFirestore();
   }
   List<UserModel> allUsers;
@@ -106,8 +106,8 @@ class AuthProvider extends ChangeNotifier {
         .signin(emailController.text, passwordController.text);
     FirestoreHelper.firestoreHelper
         .getUserFromFirestore(userCredential.user.uid);
-      SharedPreferences prefs = await SharedPreferences.getInstance();
-      prefs.setString('email', emailController.text);
+      // SharedPreferences prefs = await SharedPreferences.getInstance();
+      // prefs.setString('email', emailController.text);
       RouteHelper.routeHelper.goToPageWithReplacement(HomePage.routeName);
     resetControllers();
   }
@@ -122,9 +122,9 @@ class AuthProvider extends ChangeNotifier {
     resetControllers();
   }
 
-  getAllUsers() async {
-    this.allUsers = await FirestoreHelper.firestoreHelper.getAllUsers();
-  }
+  // getAllUsers() async {
+  //   this.allUsers = await FirestoreHelper.firestoreHelper.getAllUsers();
+  // }
 
   checkLogin(){
     bool isLoggedIn = AuthHelper.authHelper.checkUserLoging();

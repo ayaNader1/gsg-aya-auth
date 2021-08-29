@@ -8,18 +8,18 @@ import 'package:flutter_app_firebase/chats/home_page.dart';
 import 'package:flutter_app_firebase/chats/profile_page.dart';
 import 'package:flutter_app_firebase/chats/users_page.dart';
 import 'package:flutter_app_firebase/servises/routes_helper.dart';
+import 'package:flutter_app_firebase/splash_screen.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import 'Auth/ui/auth_main.dart';
 
 void main() async {
-  WidgetsFlutterBinding.ensureInitialized();
-  SharedPreferences prefs = await SharedPreferences.getInstance();
-  var email = prefs.getString('email');
+  // WidgetsFlutterBinding.ensureInitialized();
+  // SharedPreferences prefs = await SharedPreferences.getInstance();
+  // var email = prefs.getString('email');
   runApp(ChangeNotifierProvider<AuthProvider>(
       create: (context)=>AuthProvider(),
-
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
           routes: {
@@ -32,7 +32,7 @@ void main() async {
             ProfilePage.routeName: (context) => ProfilePage(),
           },
           navigatorKey: RouteHelper.routeHelper.navKey,
-          home:email == null ? FirebaseConfiguration() : HomePage())));
+          home: FirebaseConfiguration())));
 }
 
 class FirebaseConfiguration extends StatelessWidget {
@@ -51,7 +51,7 @@ class FirebaseConfiguration extends StatelessWidget {
             );
           }
           if (dataSnapShot.connectionState == ConnectionState.done) {
-            return AuthMainPage();
+            return SplachScreen();
           }
           return Scaffold(
             body: Center(
