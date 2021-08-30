@@ -4,6 +4,7 @@ import 'package:flutter_app_firebase/Auth/providers/auth_provider.dart';
 import 'package:flutter_app_firebase/Auth/ui/login_page.dart';
 import 'package:flutter_app_firebase/Auth/ui/register_page.dart';
 import 'package:flutter_app_firebase/Auth/ui/reset_password_page.dart';
+import 'package:flutter_app_firebase/chats/chat_page.dart';
 import 'package:flutter_app_firebase/chats/home_page.dart';
 import 'package:flutter_app_firebase/chats/profile_page.dart';
 import 'package:flutter_app_firebase/chats/users_page.dart';
@@ -30,6 +31,7 @@ void main() async {
             AuthMainPage.routeName: (context) => AuthMainPage(),
             UserPage.routeName: (context) => UserPage(),
             ProfilePage.routeName: (context) => ProfilePage(),
+            ChatPage.routeName: (context) => ChatPage(),
           },
           navigatorKey: RouteHelper.routeHelper.navKey,
           home: FirebaseConfiguration())));

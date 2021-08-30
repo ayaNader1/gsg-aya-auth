@@ -10,6 +10,7 @@ import 'package:flutter_app_firebase/Auth/models/countries_model.dart';
 import 'package:flutter_app_firebase/Auth/models/register_request.dart';
 import 'package:flutter_app_firebase/Auth/models/user_model.dart';
 import 'package:flutter_app_firebase/Auth/ui/auth_main.dart';
+import 'package:flutter_app_firebase/chats/chat_page.dart';
 import 'package:flutter_app_firebase/chats/home_page.dart';
 import 'package:flutter_app_firebase/servises/custom_dialog.dart';
 import 'package:flutter_app_firebase/servises/routes_helper.dart';
@@ -17,9 +18,15 @@ import 'package:image_picker/image_picker.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class AuthProvider extends ChangeNotifier {
+  List<UserModel> users;
   AuthProvider(){
     // getAllUsers();
     getCountriesFromFirestore();
+  }
+  getAllUsers() async{
+    users = await FirestoreHelper.firestoreHelper.getAllUsersFromFirestore();
+    users.removeWhere((element) => element.id == myID);
+    notifyListeners();
   }
   List<UserModel> allUsers;
   TabController tabController;
@@ -77,19 +84,20 @@ class AuthProvider extends ChangeNotifier {
     try {
       UserCredential userCredential = await AuthHelper.authHelper
           .signup(emailController.text, passwordController.text);
-      String imgURL = await FirebaseStorageHelper.firebaseStorageHelper.uploadImage(file);
+     String imgURL = await FirebaseStorageHelper.firebaseStorageHelper.uploadImage(file);
       RegisterRequest registerRequest = RegisterRequest(
         imgURL: imgURL,
+        // imgURL: 'imgURL',
           id: userCredential.user.uid,
           city: selectedCity,
           country: selectedCountry.name,
           email: emailController.text,
+          // email: userCredential.user.email,
           fName: firstNameController.text,
           lName: lastNameController.text,
           password: passwordController.text);
+      print(registerRequest.toMap());
       await FirestoreHelper.firestoreHelper.addUserToFirestore(registerRequest);
-      await AuthHelper.authHelper
-          .signup(emailController.text, passwordController.text);
       await AuthHelper.authHelper.verifyEmail();
       await AuthHelper.authHelper.logout();
       tabController.animateTo(1);
@@ -126,10 +134,15 @@ class AuthProvider extends ChangeNotifier {
   //   this.allUsers = await FirestoreHelper.firestoreHelper.getAllUsers();
   // }
 
+  String myID;
+
   checkLogin(){
     bool isLoggedIn = AuthHelper.authHelper.checkUserLoging();
     if (isLoggedIn) {
-      RouteHelper.routeHelper.goToPageWithReplacement(HomePage.routeName);
+      getUserFromFirestore();
+      this.myID = AuthHelper.authHelper.getUserId();
+      getAllUsers();
+      RouteHelper.routeHelper.goToPageWithReplacement(ChatPage.routeName);
     }else{
       RouteHelper.routeHelper.goToPageWithReplacement(AuthMainPage.routeName);
     }
@@ -174,7 +187,7 @@ class AuthProvider extends ChangeNotifier {
         fName: firstNameController.text,
         lName: lastNameController.text,
         id: user.id,
-        imgURL: imgURL);
+        imgURL: imgURL ?? user.imgURL);
 
     await FirestoreHelper.firestoreHelper.updateProfile(userModel);
     getUserFromFirestore();

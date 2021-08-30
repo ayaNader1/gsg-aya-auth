@@ -6,19 +6,8 @@ import 'package:flutter_app_firebase/Auth/ui/widgets/custom_textField.dart';
 import 'package:flutter_app_firebase/global_widgets/custom_button.dart';
 import 'package:provider/provider.dart';
 
-class RegisterPage extends StatefulWidget {
+class RegisterPage extends StatelessWidget {
   static final routeName = 'register';
-
-  @override
-  _RegisterPageState createState() => _RegisterPageState();
-}
-
-class _RegisterPageState extends State<RegisterPage> {
-  @override
-  void initState(){
-    super.initState();
-    Provider.of<AuthProvider>(context,listen: false).getCountriesFromFirestore();
-  }
 
   @override
   Widget build(BuildContext context) {

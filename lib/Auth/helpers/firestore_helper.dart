@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter_app_firebase/Auth/helpers/auth_helper.dart';
 import 'package:flutter_app_firebase/Auth/models/countries_model.dart';
 import 'package:flutter_app_firebase/Auth/models/register_request.dart';
 import 'package:flutter_app_firebase/Auth/models/user_model.dart';
@@ -9,6 +10,12 @@ class FirestoreHelper {
   static FirestoreHelper firestoreHelper = FirestoreHelper._();
   FirebaseFirestore firebaseFirestore = FirebaseFirestore.instance;
 
+  Stream<QuerySnapshot<Map<String, dynamic>>> getFirestoreStream(){
+    return firebaseFirestore.collection('Chats').orderBy('dateTime', descending: false).snapshots();
+  }
+  addMessageToFirestore(Map map) async {
+    firebaseFirestore.collection('Chats').add({...map,'userID':AuthHelper.authHelper.getUserId()});
+  }
   addUserToFirestore(RegisterRequest registerRequest) async {
     try {
       // await firebaseFirestore.collection('Users').add(registerRequest.toMap());
@@ -29,13 +36,17 @@ class FirestoreHelper {
   // }
 
   Future<List<CountryModel>> getAllCountries() async{
-    QuerySnapshot<Map<String,dynamic>> querySnapshot = await firebaseFirestore.collection('Countries').get();
-    List<CountryModel> countries = querySnapshot.docs.map((e) {
-      Map map = e.data();
-      map['id'] = e.id;
-      return CountryModel.fromJson(map);
-    }).toList();
-    return countries;
+    try {
+      QuerySnapshot<Map<String,dynamic>> querySnapshot = await firebaseFirestore.collection('Countries').get();
+      List<CountryModel> countries = querySnapshot.docs.map((e) {
+        Map map = e.data();
+        map['id'] = e.id;
+        return CountryModel.fromJson(map);
+      }).toList();
+      return countries;
+    } on Exception catch (e) {
+      // TODO
+    }
   }
 
   Future<UserModel> getUserFromFirestore(String userId) async {
